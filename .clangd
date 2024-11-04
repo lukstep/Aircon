@@ -1,0 +1,7 @@
+Diagnostics:
+  ClangTidy:
+    CheckOptions:
+      IgnoreMacros: true
+      example-check.ExampleOption: 0
+  MissingIncludes: Strict
+  UnusedIncludes: None

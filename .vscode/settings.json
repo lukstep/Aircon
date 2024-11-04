@@ -1,0 +1,22 @@
+{
+    "clangd.arguments": [
+        "-pretty",
+        "--background-index",
+        "--clang-tidy",
+        "--query-driver=/usr/bin/arm-none-eabi-g*",
+        "--compile-commands-dir={workspaceFolder}/build",
+        "--header-insertion=never",
+        "--header-insertion-decorators",
+        "--all-scopes-completion",
+        "--completion-style=detailed",
+        "-j=4",
+        "--log=verbose"
+    ],
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.checkUpdates": false,
+    "clangd.restartAfterCrash": true,
+    "clangd.detectExtensionConflicts": true,
+    "cmake.environment": {
+        "CLICOLOR_FORCE": "1"
+    },
+}
