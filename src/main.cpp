@@ -7,6 +7,8 @@
 
 #include <logger.hpp>
 #include <wifi.hpp>
+#include <rtc.hpp>
+#include <ntp.hpp>
 
 void enable_debug()
 {
@@ -24,10 +26,21 @@ void startup()
 {
     stdio_init_all();
     enable_debug();
-    wifi::init(WIFI_SSID, WIFI_PASSWORD);
 
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+    rtc::init();
+
+    bool is_wifi_connected = wifi::init(WIFI_SSID, WIFI_PASSWORD);
+
+    if (is_wifi_connected) {
+        ntp::Client ntpClient;
+        logging::INFO() << "Sync RTC via NTP\n";
+        if (ntpClient.syncTime()) {
+            rtc::setTime(ntpClient.getTime());
+            logging::INFO() << "RTC synced!\n";
+        }
+    }
 }
 
 int main()

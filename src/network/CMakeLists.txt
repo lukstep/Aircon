@@ -2,7 +2,8 @@ project(network)
 
 message(STATUS "${PROJECT_NAME} setup")
 
-add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/wifi.cpp)
+add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/wifi.cpp
+                                   ${CMAKE_CURRENT_SOURCE_DIR}/src/ntp.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
