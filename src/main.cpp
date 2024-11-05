@@ -6,35 +6,43 @@
 #include "pico/stdlib.h"
 
 #include <logger.hpp>
+#include <wifi.hpp>
 
 void enable_debug()
 {
 #ifndef NDEBUG
-	// workaround for CMSIS-DAP,
-	// see: https://github.com/raspberrypi/pico-sdk/issues/1152
-	timer_hw->dbgpause = 0;
+    // workaround for CMSIS-DAP,
+    // see: https://github.com/raspberrypi/pico-sdk/issues/1152
+    timer_hw->dbgpause = 0;
 #endif
 }
 
 extern class logging::Logger* logger;
+constexpr int LED_PIN = 24;
+
+void startup()
+{
+    stdio_init_all();
+    enable_debug();
+    wifi::init(WIFI_SSID, WIFI_PASSWORD);
+
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+}
 
 int main()
 {
-	enable_debug();
-	stdio_init_all();
-	constexpr int LED_PIN = 24;
-	gpio_init(LED_PIN);
-	gpio_set_dir(LED_PIN, GPIO_OUT);
+    auto l = logging::Logger(logging::Logger::loggerType::uart);
+    logger = &l;
 
-	auto l = logging::Logger(logging::Logger::loggerType::uart);
-	logger = &l;
+    startup();
 
-	while(1)
-	{
-		gpio_put(LED_PIN, 0);
-		sleep_ms(250);
-		gpio_put(LED_PIN, 1);
-		logging::INFO() << "Hello Word\n";
-		sleep_ms(1000);
-	}
+    while(1)
+    {
+        gpio_put(LED_PIN, 0);
+        sleep_ms(250);
+        gpio_put(LED_PIN, 1);
+        logging::INFO() << "Hello Word\n";
+        sleep_ms(1000);
+    }
 }
