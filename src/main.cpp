@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "hardware/gpio.h"
-#include "hardware/timer.h"
 #include "pico/binary_info.h"
 #include "pico/stdlib.h"
 
@@ -9,15 +8,9 @@
 #include <wifi.hpp>
 #include <rtc.hpp>
 #include <ntp.hpp>
+#include <debug.hpp>
+#include "rs485.hpp"
 
-void enable_debug()
-{
-#ifndef NDEBUG
-    // workaround for CMSIS-DAP,
-    // see: https://github.com/raspberrypi/pico-sdk/issues/1152
-    timer_hw->dbgpause = 0;
-#endif
-}
 
 extern class logging::Logger* logger;
 constexpr int LED_PIN = 24;
